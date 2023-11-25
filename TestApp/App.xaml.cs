@@ -27,7 +27,6 @@ namespace TestApp
         /// <inheritdoc />
         protected override void OnExit(ExitEventArgs e)
         {
-            Console.Beep();
             _instanceMutex?.ReleaseMutex();
             _instanceMutex?.Dispose();
 
