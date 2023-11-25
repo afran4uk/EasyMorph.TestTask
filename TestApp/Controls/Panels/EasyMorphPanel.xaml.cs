@@ -87,13 +87,15 @@ namespace TestApp.Controls.Panels
             _selectedContentControl.PreviewMouseDown -= OnContentControlMouseDown;
             CanvasLayout.Children.Remove(_selectedContentControl);
             _selectedContentControl = null;
+
+            _positionManager.SaveShapePositions(CanvasLayout.Children);
         }
 
         /// <summary>
         /// Add new shape with specific shape position.
         /// </summary>
         /// <param name="shapePositionInfo">Previous shape position.</param>
-        private void AddNewShape(BasePositionInfo shapePositionInfo)
+        private void AddNewShape(ShapePositionInfo shapePositionInfo)
         {
             var newContentControl = new ContentControl
             {
@@ -103,6 +105,9 @@ namespace TestApp.Controls.Panels
                 MinWidth = 20,
                 Template = (ControlTemplate)FindResource("ResizeShapeItemTemplate")
             };
+
+            if (shapePositionInfo.ZIndex != null)
+                Panel.SetZIndex(newContentControl, shapePositionInfo.ZIndex.Value);
 
             var newRectangle = new Rectangle
             {
@@ -127,13 +132,35 @@ namespace TestApp.Controls.Panels
         /// </summary>
         private void OnContentControlMouseDown(object sender, MouseButtonEventArgs e)
         {
+            var tempContentControl = sender as ContentControl;
+
+            if (tempContentControl == _selectedContentControl)
+                return;
+
             if (_selectedContentControl?.Content is Shape previousShape)
                 previousShape.Stroke = _blueBrush;
             
-            _selectedContentControl = sender as ContentControl;
+            _selectedContentControl = tempContentControl;
 
             if (_selectedContentControl?.Content is Shape shape)
                 shape.Stroke = _orangeBrush;
+
+            RecalculateZIndexes();
+        }
+
+        /// <summary>
+        /// Recalculate ZIndex for each elements.
+        /// </summary>
+        private void RecalculateZIndexes()
+        {
+            var zIndex = 0;
+            Panel.SetZIndex(_selectedContentControl, int.MaxValue);
+
+            foreach (UIElement canvasLayoutChild in CanvasLayout.Children)
+            {
+                if (canvasLayoutChild != _selectedContentControl)
+                    Panel.SetZIndex(canvasLayoutChild, zIndex++);
+            }
         }
 
         /// <summary>

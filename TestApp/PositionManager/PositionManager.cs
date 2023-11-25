@@ -33,7 +33,8 @@ namespace TestApp.PositionManager
                         Left = Canvas.GetLeft(contentControl),
                         Top = Canvas.GetTop(contentControl),
                         Height = contentControl.ActualHeight,
-                        Width = contentControl.ActualWidth
+                        Width = contentControl.ActualWidth,
+                        ZIndex = Panel.GetZIndex(contentControl)
                     });
                 }
             }

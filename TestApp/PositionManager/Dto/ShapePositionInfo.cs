@@ -7,6 +7,7 @@ namespace TestApp.PositionManager.Dto
     [Serializable]
     public class ShapePositionInfo : BasePositionInfo
     {
+        public int? ZIndex { get; set; }
         public static ShapePositionInfo GetRandomShapePosition(FrameworkElement element)
         {
             var random = new Random();
