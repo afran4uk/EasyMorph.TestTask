@@ -1,0 +1,41 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:thumbs="clr-namespace:TestApp.Controls.Thumbs">
+
+    <!-- MoveThumb Template -->
+    <ControlTemplate x:Key="MoveThumbTemplate" TargetType="{x:Type thumbs:MoveThumb}">
+        <Rectangle Fill="Transparent" StrokeThickness="0" />
+    </ControlTemplate>
+
+    <!-- Resize Container Template -->
+    <ControlTemplate x:Key="ResizeCornerContainerTemplate" TargetType="{x:Type Control}">
+        <Grid>
+            <thumbs:ResizeThumb Style="{StaticResource ResizeThumbStyle}" 
+                                Cursor="SizeNWSE" Margin="-3 -3 0 0"
+                                VerticalAlignment="Top" HorizontalAlignment="Left" />
+            <thumbs:ResizeThumb Style="{StaticResource ResizeThumbStyle}" 
+                                Cursor="SizeNESW" Margin="0 -3 -3 0"
+                                VerticalAlignment="Top" HorizontalAlignment="Right" />
+            <thumbs:ResizeThumb Style="{StaticResource ResizeThumbStyle}"
+                                Cursor="SizeNESW" Margin="-3 0 0 -3"
+                                VerticalAlignment="Bottom" HorizontalAlignment="Left" />
+            <thumbs:ResizeThumb Style="{StaticResource ResizeThumbStyle}"
+                                Cursor="SizeNWSE" Margin="0 0 -3 -3"
+                                VerticalAlignment="Bottom" HorizontalAlignment="Right" />
+        </Grid>
+    </ControlTemplate>
+
+    <!-- Shape Item Template-->
+    <ControlTemplate x:Key="ResizeShapeItemTemplate" TargetType="ContentControl">
+        <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+            <thumbs:MoveThumb Template="{StaticResource MoveThumbTemplate}" 
+                              DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}" 
+                              Cursor="Hand" />
+            <Grid Margin="3">
+                <Control Template="{StaticResource ResizeCornerContainerTemplate}" />
+                <ContentPresenter Content="{TemplateBinding ContentControl.Content}" />
+            </Grid>
+        </Grid>
+    </ControlTemplate>
+
+</ResourceDictionary>
